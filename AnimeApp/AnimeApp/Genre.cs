@@ -35,6 +35,10 @@ namespace AnimeApp {
             return s;
         }
 
+        public static List<GenreType> getAllGenreList() {
+            return Enum.GetValues(typeof(GenreType)).Cast<GenreType>().ToList();
+        }
+
         public enum GenreType {
             Action,
             Adventure,

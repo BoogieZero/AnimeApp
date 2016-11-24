@@ -35,10 +35,6 @@ namespace AnimeApp {
                 tabAnime.Columns.Add(item.displayName, item.attibType);
             }
 
-            var properties = typeof(Unit).GetProperties();
-            object[] values = new object[properties.Length];
-
-
             //tab rows
             foreach(KeyValuePair<int, Unit> item in srcAnime) {
                 addRow(item.Value);
@@ -47,7 +43,11 @@ namespace AnimeApp {
         }
 
         private static void addRow(Unit unit) {
-            var properties = typeof(Unit).GetProperties();
+            var properties = typeof(Unit).GetProperties(
+                BindingFlags.NonPublic | 
+                BindingFlags.Public |
+                BindingFlags.Instance);
+
             object[] values = new object[properties.Length];
 
             for(int i = 0; i < properties.Length; i++) {

@@ -44,55 +44,18 @@ namespace AnimeApp {
         }
 
         private static void readUnits(XmlReader xrr, Dictionary<int, Unit> units) {
-            //units = new Dictionary<int, Unit>();
-            int id = -1;
-            int year = -1;
-            Rating rating = null;
-            Genre genre = null;
-            string name = "";
-            string info = "";
 
             while(xrr.Read()) {
-                
-                if(xrr.NodeType == XmlNodeType.EndElement) {
-                    //End element
-                    if(xrr.Name == "Units") break;
+                if(xrr.IsStartElement()) {
+                    //Start element
                     if(xrr.Name == "Unit") {
-                        Unit u = new Unit(id, name, year, rating, genre, info);
+                        Unit u = new Unit(xrr);
                         units.Add(u.getId(), u);
                     }
                 }else {
-                    //Start element
-                    switch(xrr.Name) {
-                        case "Unit":
-                            try {
-                                id = int.Parse(xrr["id"]);
-                            } catch(Exception e) {
-                                throw new System.Exception("id NaN");
-                            }
-                            name = xrr["name"];
-                            break;
-                        case "Year":
-                            xrr.Read();
-                            try {
-                                year = int.Parse(xrr.Value.Trim());
-                            } catch(Exception e) {
-                                throw new System.Exception("Year NaN");
-                            }
-                            break;
-                        case "Rating":
-                            xrr.Read();
-                            rating = new Rating(xrr.Value.Trim().Length);
-                            break;
-                        case "Genre":
-                            xrr.Read();
-                            genre = new Genre(xrr.Value.Trim().Split(' '));
-                            break;
-                        case "Info":
-                            xrr.Read();
-                            info = xrr.Value.Trim();
-                            break;
-                    }
+                    //End element
+                    if(xrr.Name == "Units")
+                        break;
                 }
             }
         }
@@ -115,31 +78,7 @@ namespace AnimeApp {
                 xwr.WriteStartElement("Units"); //Units
 
                 foreach(KeyValuePair<int, Unit> item in source) {
-                    xwr.WriteStartElement("Unit");  //Unit
-                    xwr.WriteAttributeString("name", "" + item.Value.name);     //name
-                    xwr.WriteAttributeString("id", "" + item.Value.getId());    //id
-
-                    //Year
-                    xwr.WriteStartElement("Year");
-                    xwr.WriteString("" + item.Value.year);
-                    xwr.WriteEndElement();
-
-                    //Rating
-                    xwr.WriteStartElement("Rating");
-                    xwr.WriteString("" + item.Value.rating);
-                    xwr.WriteEndElement();
-
-                    //Genre
-                    xwr.WriteStartElement("Genre");
-                    xwr.WriteString("" + item.Value.genre);
-                    xwr.WriteEndElement();
-
-                    //Info
-                    xwr.WriteStartElement("Info");
-                    xwr.WriteString("" + item.Value.info);
-                    xwr.WriteEndElement();
-
-                    xwr.WriteEndElement();  //Unit
+                    item.Value.toXmlOutput(xwr);
                 }
                 xwr.WriteEndElement();  //Units
                 xwr.WriteEndElement();  //Root

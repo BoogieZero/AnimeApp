@@ -7,3 +7,4 @@ C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Debug\AnimeApp.Properties.Resources.res
 C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Debug\AnimeApp.csproj.GenerateResource.Cache
 C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Debug\AnimeApp.exe
 C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Debug\AnimeApp.pdb
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Debug\AnimeApp.GenreDialog.resources

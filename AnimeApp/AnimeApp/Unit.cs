@@ -8,7 +8,7 @@ using System.Xml;
 namespace AnimeApp {
     public class Unit {
         public static columnInfo[] columnsInfo;
-        private int id;
+        private int id { get; set; }
 
         public string name { get; set; }
         public int year { get; set; }
@@ -18,6 +18,7 @@ namespace AnimeApp {
 
         static Unit() {
             columnsInfo = new columnInfo[] {
+                new columnInfo("id", "id", typeof(int)),
                 new columnInfo("name", "Name", typeof(string)),
                 new columnInfo("year", "Year", typeof(int)),
                 new columnInfo("rating", "Rating", typeof(string)),
@@ -47,9 +48,78 @@ namespace AnimeApp {
             this.info = info;
         }
 
+        public Unit(XmlReader xrr) {
+            do {
+                if(xrr.IsStartElement()) {
+                    //Start element
+                    switch(xrr.Name) {
+                        case "Unit":
+                            try {
+                                id = int.Parse(xrr["id"]);
+                            } catch(Exception e) {
+                                throw new System.Exception("id NaN");
+                            }
+                            name = xrr["name"];
+                            break;
+                        case "Year":
+                            xrr.Read();
+                            try {
+                                year = int.Parse(xrr.Value.Trim());
+                            } catch(Exception e) {
+                                throw new System.Exception("Year NaN");
+                            }
+                            break;
+                        case "Rating":
+                            xrr.Read();
+                            rating = new Rating(xrr.Value.Trim().Length);
+                            break;
+                        case "Genre":
+                            xrr.Read();
+                            genre = new Genre(xrr.Value.Trim().Split(' '));
+                            break;
+                        case "Info":
+                            xrr.Read();
+                            info = xrr.Value.Trim();
+                            break;
+                    }
+                } else {
+                    //End element
+                    if(xrr.Name == "Unit") break;
+                }
+            } while(xrr.Read());
+        }
+
 
         public int getId() {
             return id;
+        }
+
+        public void toXmlOutput(XmlWriter xwr) {
+            xwr.WriteStartElement("Unit");  //Unit
+            xwr.WriteAttributeString("name", "" + name);     //name
+            xwr.WriteAttributeString("id", "" + getId());    //id
+
+            //Year
+            xwr.WriteStartElement("Year");
+            xwr.WriteString("" + year);
+            xwr.WriteEndElement();
+
+            //Rating
+            xwr.WriteStartElement("Rating");
+            xwr.WriteString("" + rating);
+            xwr.WriteEndElement();
+
+            //Genre
+            xwr.WriteStartElement("Genre");
+            xwr.WriteString("" + genre);
+            xwr.WriteEndElement();
+
+            //Info
+            xwr.WriteStartElement("Info");
+            xwr.WriteString("" + info);
+            xwr.WriteEndElement();
+
+            xwr.WriteEndElement();  //Unit
         }
     }
 
