@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimeApp", "AnimeApp\AnimeApp.csproj", "{998A44AD-8BB7-4C7A-9215-FDD7D46049A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberClassification", "..\..\..\School\UIR\Result\Project\NumberClasification\NumberClasification\NumberClassification.csproj", "{00F78647-6730-4015-96E3-9CE3D16199AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{998A44AD-8BB7-4C7A-9215-FDD7D46049A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{998A44AD-8BB7-4C7A-9215-FDD7D46049A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{998A44AD-8BB7-4C7A-9215-FDD7D46049A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{998A44AD-8BB7-4C7A-9215-FDD7D46049A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00F78647-6730-4015-96E3-9CE3D16199AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F78647-6730-4015-96E3-9CE3D16199AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F78647-6730-4015-96E3-9CE3D16199AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F78647-6730-4015-96E3-9CE3D16199AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

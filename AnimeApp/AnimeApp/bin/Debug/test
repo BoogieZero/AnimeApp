@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<id_counter>2</id_counter>
+	<Units>
+		<Unit
+			name="Suck"
+			id="1">
+			<Year>2016</Year>
+			<Rating>++</Rating>
+			<Genre>Action Adventure Martial_Art</Genre>
+			<Info>infoooo</Info>
+		</Unit>
+	</Units>
+</Root>
