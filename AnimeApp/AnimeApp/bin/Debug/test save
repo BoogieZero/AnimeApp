@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
-	<id_counter>5</id_counter>
+	<id_counter>1</id_counter>
 	<Units>
 		<Unit
 			name="Suck"
@@ -17,38 +17,6 @@
 			<Rating>+++</Rating>
 			<Genre>Action</Genre>
 			<Info>infoooo2</Info>
-		</Unit>
-		<Unit
-			name="Dummy22"
-			id="2">
-			<Year>0</Year>
-			<Rating></Rating>
-			<Genre></Genre>
-			<Info></Info>
-		</Unit>
-		<Unit
-			name="adsad"
-			id="3">
-			<Year>0</Year>
-			<Rating></Rating>
-			<Genre></Genre>
-			<Info></Info>
-		</Unit>
-		<Unit
-			name="dadsff"
-			id="4">
-			<Year>0</Year>
-			<Rating></Rating>
-			<Genre></Genre>
-			<Info></Info>
-		</Unit>
-		<Unit
-			name="Dummy"
-			id="5">
-			<Year>0</Year>
-			<Rating></Rating>
-			<Genre></Genre>
-			<Info></Info>
 		</Unit>
 	</Units>
 </Root>
