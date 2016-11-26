@@ -9,6 +9,10 @@ namespace AnimeApp {
     public class Genre {
         public List<GenreType> genre;
 
+        public Genre() {
+            genre = new List<GenreType>();
+        }
+
         public Genre(List<Genre.GenreType> genres) {
             genre = genres;
         }

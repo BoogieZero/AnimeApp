@@ -9,14 +9,14 @@ using System.Xml;
 namespace AnimeApp {
     public static class Loader {
 
-        public static Dictionary<int, Unit> loadFrom(string file) {
+        public static Dictionary<int, Unit> loadFrom(string file, out int idCounter) {
 
             if(!File.Exists(file)) {
                 throw new System.Exception("File (" + file + ") doesn't exist!");
             }
 
             Dictionary<int, Unit> input = new Dictionary<int, Unit>();
-            int idCounter = -1;
+            idCounter = -1;
             
 
             using(XmlReader xrr = XmlReader.Create(file)) {

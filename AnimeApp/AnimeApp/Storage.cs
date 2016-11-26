@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace AnimeApp {
     public static class Storage {
         private static readonly String SAVE_FILE = "test";
-        private static int idCounter = 1;
+        private static int idCounter = -1;
 
         private static Dictionary<int, Unit> srcAnime;
         public static DataTable tabAnime;
@@ -19,7 +19,8 @@ namespace AnimeApp {
             if(idCounter == -1) {
                 throw new System.Exception("ID counter is not loaded!");
             }
-            return idCounter++;
+            idCounter++;
+            return idCounter;
         }
 
         public static int getIdCounter() {
@@ -31,7 +32,7 @@ namespace AnimeApp {
         }
 
         public static void createAnimeTable() {
-            srcAnime = Loader.loadFrom(SAVE_FILE);
+            srcAnime = Loader.loadFrom(SAVE_FILE, out idCounter);
 
             tabAnime = new DataTable("Anime");
             //tab columns
@@ -58,6 +59,14 @@ namespace AnimeApp {
                 values[i] = properties[i].GetValue(unit);
             }
             tabAnime.Rows.Add(values);
+        }
+
+        public static int createNewUnit() {
+            int id = getNewId();
+            Unit u = new Unit(id);
+            srcAnime.Add(id, u);
+            //addRow(u);
+            return id;
         }
 
         public static void addUnit(Unit unit) {

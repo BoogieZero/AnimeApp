@@ -28,8 +28,13 @@ namespace AnimeApp {
 
         }
 
-        public Unit() {
-            id = Storage.getNewId();
+        public Unit(int id) {
+            this.id = id;
+            this.name = "Dummy";
+            this.year = 0;
+            this.rating = new Rating(0);
+            this.genre = new Genre();
+            this.info = "";
         }
 
         public Unit(

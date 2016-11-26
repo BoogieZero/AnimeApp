@@ -25,18 +25,12 @@ namespace AnimeApp {
             dgvMain.Columns[dgvMain.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             lbAppName.MouseDown += new MouseEventHandler(this.tsMain_MouseDown);
-            lbAppName.MouseDown += LbAppName_MouseDown;
             lbAppName.MouseMove += new MouseEventHandler(this.tsMain_MouseMove);
             lbAppName.MouseUp += new MouseEventHandler(this.tsMain_MouseUp);
 
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
             tsMain.Renderer = new ToolStripOverride();
-        }
-
-        private void LbAppName_MouseDown(object sender, MouseEventArgs e) {
-            //SOMEBODY'S CONSUMING THIS EVENT
-            throw new NotImplementedException();
         }
 
 
@@ -138,6 +132,8 @@ namespace AnimeApp {
 
         #endregion
 
+        
+
         private void chbEditable_KeyDown(object sender, KeyEventArgs e) {
             if(e.KeyCode == Keys.Enter) {
                 if(chbEditable.Checked) {
@@ -152,6 +148,19 @@ namespace AnimeApp {
 
 
         #region cells
+
+        private void dgvMain_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e) {
+            if(e.RowIndex == dgvMain.NewRowIndex) {
+                int id = Storage.createNewUnit();
+                Unit src = Storage.getUnit(id);
+                dgvMain.CurrentRow.Cells[0].Value = src.getId();
+                dgvMain.CurrentRow.Cells[1].Value = src.name;
+                dgvMain.CurrentRow.Cells[2].Value = src.year;
+                dgvMain.CurrentRow.Cells[3].Value = src.rating;
+                dgvMain.CurrentRow.Cells[4].Value = src.genre;
+                dgvMain.CurrentRow.Cells[5].Value = src.info;
+            }
+        }
 
         private void dgvMain_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) {
             //Console.WriteLine("validating e.colIndex: " + e.ColumnIndex+" val: "+ dgvMain.CurrentCell.Value.ToString());
@@ -197,7 +206,9 @@ namespace AnimeApp {
 
         private void dgvMain_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
             DataGridViewCell cell = dgvMain.CurrentCell;
+           
             int id = (int)dgvMain.CurrentRow.Cells[0].Value;
+
             Unit src = Storage.getUnit(id);
 
             switch(e.ColumnIndex) {

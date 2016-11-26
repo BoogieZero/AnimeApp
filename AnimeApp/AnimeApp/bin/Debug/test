@@ -4,7 +4,7 @@
 	<Units>
 		<Unit
 			name="Suck"
-			id="1">
+			id="0">
 			<Year>2016</Year>
 			<Rating>++</Rating>
 			<Genre>Action Adventure Martial_Art</Genre>
@@ -12,10 +12,10 @@
 		</Unit>
         <Unit
 			name="Suck2"
-			id="2">
+			id="1">
 			<Year>2002</Year>
 			<Rating>+++</Rating>
-			<Genre>Action Adventure Martial_Art</Genre>
+			<Genre>Action</Genre>
 			<Info>infoooo2</Info>
 		</Unit>
 	</Units>
