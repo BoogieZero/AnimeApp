@@ -21,8 +21,8 @@ namespace AnimeApp {
                 new columnInfo("id", "id", typeof(int)),
                 new columnInfo("name", "Name", typeof(string)),
                 new columnInfo("year", "Year", typeof(int)),
-                new columnInfo("rating", "Rating", typeof(string)),
-                new columnInfo("genre", "Genre", typeof(string)),
+                new columnInfo("rating", "Rating", typeof(Rating)),
+                new columnInfo("genre", "Genre", typeof(Genre)),
                 new columnInfo("info", "Info", typeof(string)),
             };
 
@@ -140,6 +140,18 @@ namespace AnimeApp {
 
         public Rating(int rating) {
             this.rating = rating;
+        }
+
+        public static Boolean tryParse(string str, out Rating rating) {
+            char[] chs = str.ToCharArray();
+            for(int i = 0; i < str.Length; i++) {
+                if(chs[i] != '+') {
+                    rating = null;
+                    return false;
+                }
+            }
+            rating = new Rating(str.Length);
+            return true;
         }
 
         public override string ToString() {

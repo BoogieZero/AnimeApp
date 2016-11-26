@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
 	<id_counter>1</id_counter>
 	<Units>
@@ -10,7 +10,7 @@
 			<Genre>Action Adventure Martial_Art</Genre>
 			<Info>infoooo</Info>
 		</Unit>
-        <Unit
+		<Unit
 			name="Suck2"
 			id="2">
 			<Year>2002</Year>

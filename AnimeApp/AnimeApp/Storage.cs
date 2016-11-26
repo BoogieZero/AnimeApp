@@ -26,6 +26,10 @@ namespace AnimeApp {
             return idCounter;
         }
 
+        public static Unit getUnit(int id) {
+            return srcAnime[id];
+        }
+
         public static void createAnimeTable() {
             srcAnime = Loader.loadFrom(SAVE_FILE);
 
@@ -62,7 +66,7 @@ namespace AnimeApp {
         }
 
         public static void save() {
-            Loader.saveAs(SAVE_FILE, srcAnime);
+            Loader.saveAs(SAVE_FILE+" save", srcAnime);
         }
     }
 }

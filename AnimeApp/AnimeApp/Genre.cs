@@ -20,10 +20,27 @@ namespace AnimeApp {
                 try {
                     pom = (GenreType)Enum.Parse(typeof(GenreType), item);
                     genre.Add(pom);
-                }catch(Exception e) {
+                }catch(Exception) {
                     throw new System.Exception("Could not parse to Genre enum!");
                 }
             }
+        }
+
+        public static Boolean tryParse(string str, out Genre genre) {
+            genre = null;
+            if(str == "") {
+                return false;
+            }
+            string[] s = str.Split(' ');
+
+            try {
+                genre = new Genre(s);
+            } catch(Exception) {
+                genre = null;
+                return false;
+            }
+
+            return true;
         }
 
         public override string ToString() {
@@ -31,6 +48,7 @@ namespace AnimeApp {
             for(int i = 0; i < genre.Count - 1; i++) {
                 s += genre[i] + " ";
             }
+            if(genre.Count == 0) return s;
             s += genre[genre.Count - 1];
             return s;
         }
