@@ -31,16 +31,6 @@ namespace AnimeApp {
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
             tsMain.Renderer = new ToolStripOverride();
-
-            object[] test = new object[] {
-                5,
-                "jmeno",
-                666,
-                new Rating(1),
-                new Genre(),
-                "informace"
-            };
-            //Storage.tabAnime.Rows.Add(test);
         }
 
 
@@ -111,7 +101,7 @@ namespace AnimeApp {
                 dgvMain.AllowUserToAddRows = true;
                 dgvMain.AllowUserToDeleteRows = true;
                 dgvMain.Columns["id"].ReadOnly = true;
-                //dgvMain.Columns["genre"].ReadOnly = true;
+                dgvMain.Columns["genre"].ReadOnly = true;
 
             }
         }
@@ -140,10 +130,6 @@ namespace AnimeApp {
             mouseDown = false;
         }
 
-
-
-
-
         #endregion
 
         
@@ -163,15 +149,22 @@ namespace AnimeApp {
 
         #region cells
 
-        private void dgvMain_CellDoubleClick(object sender, DataGridViewCellEventArgs e) {
-            if(e.ColumnIndex == 4) {
-                showEditGenreDialog();
+        private void dgvMain_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e) {
+            if(e.RowIndex == dgvMain.NewRowIndex) {
+                int id = Storage.createNewUnit();
+                Unit src = Storage.getUnit(id);
+                dgvMain.CurrentRow.Cells[0].Value = src.getId();
+                dgvMain.CurrentRow.Cells[1].Value = src.name;
+                dgvMain.CurrentRow.Cells[2].Value = src.year;
+                dgvMain.CurrentRow.Cells[3].Value = src.rating;
+                dgvMain.CurrentRow.Cells[4].Value = src.genre;
+                dgvMain.CurrentRow.Cells[5].Value = src.info;
             }
         }
 
         private void dgvMain_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) {
             //Console.WriteLine("validating e.colIndex: " + e.ColumnIndex+" val: "+ dgvMain.CurrentCell.Value.ToString());
-                    
+
             switch(e.ColumnIndex) {
                 case 2:                    //year
                     int i = -1;
@@ -195,22 +188,10 @@ namespace AnimeApp {
             }
         }
 
-        private void dgvMain_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
-            Console.WriteLine("End edit");
-            DataGridViewCell cell = dgvMain.CurrentCell;
-
-            int id = (int)dgvMain.CurrentRow.Cells[0].Value;
-
-            Unit src = Storage.getUnit(id);
-
-            switch(e.ColumnIndex) {
-                case 1: src.name = (string)cell.Value; break;   //name
-                case 2: src.year = (int)cell.Value; break;      //year
-                case 3: src.rating = (Rating)cell.Value; break; //rating
-                case 4: src.genre = (Genre)cell.Value; break;   //genre
-                case 5: src.info = (string)cell.Value; break;   //info
+        private void dgvMain_CellDoubleClick(object sender, DataGridViewCellEventArgs e) {
+            if(dgvMain.ReadOnly == false && e.ColumnIndex == 4) {
+                showEditGenreDialog();
             }
-
         }
 
         private void dgvMain_KeyDown(object sender, KeyEventArgs e) {
@@ -223,24 +204,34 @@ namespace AnimeApp {
             }
         }
 
-        
+        private void dgvMain_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
+            DataGridViewCell cell = dgvMain.CurrentCell;
+           
+            int id = (int)dgvMain.CurrentRow.Cells[0].Value;
+
+            Unit src = Storage.getUnit(id);
+
+            switch(e.ColumnIndex) {
+                case 1: src.name = (string)cell.Value;  break;  //name
+                case 2: src.year = (int)cell.Value;     break;  //year
+                case 3: src.rating = (Rating)cell.Value;break;  //rating
+                case 4: src.genre = (Genre)cell.Value;  break;  //genre
+                case 5: src.info = (string)cell.Value;  break;  //info
+            }
+            
+        }
 
         #endregion
 
         private void showEditGenreDialog() {
             GenreDialog gd = new GenreDialog(this, dgvMain.CurrentCell);
-            //dgvMain.Columns[dgvMain.CurrentCell.ColumnIndex].ReadOnly = false;
+            dgvMain.Columns[dgvMain.CurrentCell.ColumnIndex].ReadOnly = false;
             Opacity = 0.60;
-            //dgvMain.BeginEdit(false);
-            dgvMain.Columns[dgvMain.CurrentCell.ColumnIndex].ReadOnly = true;
+            dgvMain.BeginEdit(false);
             gd.ShowDialog();
             //dgvMain_CellEndEdit(new object(), new DataGridViewCellEventArgs(dgvMain.CurrentCell.ColumnIndex, dgvMain.CurrentRow.Index));
             dgvMain.EndEdit();
             dgvMain.Columns[dgvMain.CurrentCell.ColumnIndex].ReadOnly = true;
-            //dgvMain.CurrentCell = null;
-            //dgvMain.CurrentCell = 
-            //Console.WriteLine("is in edit"+dgvMain.CurrentCell.IsInEditMode);
-            //dgvMain.Columns[dgvMain.CurrentCell.ColumnIndex].ReadOnly = true;
             Opacity = 0.97;
         }
 
