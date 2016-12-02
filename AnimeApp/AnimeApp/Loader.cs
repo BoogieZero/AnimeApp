@@ -66,6 +66,10 @@ namespace AnimeApp {
             settings.IndentChars = "\t";
             settings.NewLineOnAttributes = true;
 
+            if(!Directory.Exists(Storage.APPDATA + Storage.SAVE_FOLDER)) {
+                Directory.CreateDirectory(Storage.APPDATA + "\\" + Storage.SAVE_FOLDER);
+            }
+
             using(XmlWriter xwr = XmlWriter.Create(file, settings)) {
                 xwr.WriteStartDocument();
                 xwr.WriteStartElement("Root");  //Root

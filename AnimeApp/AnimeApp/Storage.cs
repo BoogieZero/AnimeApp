@@ -9,7 +9,12 @@ using System.Collections.Generic;
 
 namespace AnimeApp {
     public static class Storage {
-        private static readonly String SAVE_FILE = "test";
+        public static readonly String APPDATA = //"";
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)+"\\";
+        public static readonly String SAVE_FOLDER = "AnimeApp";
+        private static readonly String SAVE_FILE_NAME = "AnimeApp.dat";
+        private static readonly String SAVE_FILE_PATH = 
+            APPDATA + SAVE_FOLDER + "\\" + SAVE_FILE_NAME;
         private static int idCounter = -1;
 
         private static Dictionary<int, Unit> srcAnime;
@@ -32,7 +37,7 @@ namespace AnimeApp {
         }
 
         public static void createAnimeTable() {
-            srcAnime = Loader.loadFrom(SAVE_FILE, out idCounter);
+            srcAnime = Loader.loadFrom(SAVE_FILE_PATH, out idCounter);
 
             tabAnime = new DataTable("Anime");
             //tab columns
@@ -65,7 +70,7 @@ namespace AnimeApp {
             int id = getNewId();
             Unit u = new Unit(id);
             srcAnime.Add(id, u);
-            //addRow(u);
+            addRow(u);
             return id;
         }
 
@@ -74,8 +79,15 @@ namespace AnimeApp {
             addRow(unit);
         }
 
+        public static void deleteUnit(int id) {
+            srcAnime.Remove(id);
+            if(id == idCounter) {
+                idCounter--;
+            }
+        }
+
         public static void save() {
-            Loader.saveAs(SAVE_FILE+" save", srcAnime);
+            Loader.saveAs(SAVE_FILE_PATH, srcAnime);
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace AnimeApp {
     public partial class Form1 : Form {
+        private const float DEFAULT_OPACITY = 0.9f;
         private const Boolean ID_VISIBLE = true;
         private Boolean mouseDown = false;
         private Point lastLocation;
@@ -18,9 +19,15 @@ namespace AnimeApp {
             InitializeComponent();
 
             Storage.createAnimeTable();
+
+            Console.WriteLine("path: "+Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+
+            dgvMain.RowsAdded += DgvMain_RowsAdded;
+
             dgvMain.DataSource = Storage.tabAnime;
             //id column invisible
             dgvMain.Columns["id"].Visible = ID_VISIBLE;
+            //((DataGridViewCheckBoxColumn)dgvMain.Columns["Watched"]).FlatStyle = FlatStyle.Flat;
             //last column (info) fills the space
             dgvMain.Columns[dgvMain.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -31,6 +38,12 @@ namespace AnimeApp {
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
             tsMain.Renderer = new ToolStripOverride();
+            this.Scale(new SizeF(1.0f, 1.7f));
+            this.Opacity = DEFAULT_OPACITY;
+        }
+
+        private void DgvMain_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e) {
+            
         }
 
 
@@ -93,15 +106,19 @@ namespace AnimeApp {
             if(!chbEditable.Checked) {
                 //turn off
                 dgvMain.ReadOnly = true;
-                dgvMain.AllowUserToAddRows = false;
+                btAdd.Enabled = false;
+                btAdd.Visible = false;
+                //dgvMain.AllowUserToAddRows = false;
                 dgvMain.AllowUserToDeleteRows = false;
             } else {
                 //turn on
                 dgvMain.ReadOnly = false;
-                dgvMain.AllowUserToAddRows = true;
+                btAdd.Enabled = true;
+                btAdd.Visible = true;
+                //dgvMain.AllowUserToAddRows = true;
                 dgvMain.AllowUserToDeleteRows = true;
                 dgvMain.Columns["id"].ReadOnly = true;
-                dgvMain.Columns["genre"].ReadOnly = true;
+                //dgvMain.Columns["genre"].ReadOnly = true;
 
             }
         }
@@ -132,8 +149,6 @@ namespace AnimeApp {
 
         #endregion
 
-        
-
         private void chbEditable_KeyDown(object sender, KeyEventArgs e) {
             if(e.KeyCode == Keys.Enter) {
                 if(chbEditable.Checked) {
@@ -146,10 +161,15 @@ namespace AnimeApp {
 
         #endregion
 
-
         #region cells
 
         private void dgvMain_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e) {
+            if(dgvMain.Columns[e.ColumnIndex].Name == "Genre") {
+                showEditGenreDialog();
+                e.Cancel = true;
+                dgvMain_CellEndEdit(sender, new DataGridViewCellEventArgs(e.ColumnIndex, e.RowIndex));
+            }
+            /*
             if(e.RowIndex == dgvMain.NewRowIndex) {
                 int id = Storage.createNewUnit();
                 Unit src = Storage.getUnit(id);
@@ -160,6 +180,19 @@ namespace AnimeApp {
                 dgvMain.CurrentRow.Cells[4].Value = src.genre;
                 dgvMain.CurrentRow.Cells[5].Value = src.info;
             }
+            */
+        }
+
+        private void dgvMain_CellParsing(object sender, DataGridViewCellParsingEventArgs e) {
+            string val = e.Value.ToString();
+
+            DataGridViewCell cell = dgvMain[e.ColumnIndex, e.RowIndex];
+
+            if(e.DesiredType == typeof(Rating)) {
+                ((Rating)cell.Value).rating = val.Length;
+                e.Value = (Rating)cell.Value;
+            }
+            e.ParsingApplied = true;
         }
 
         private void dgvMain_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) {
@@ -185,54 +218,83 @@ namespace AnimeApp {
                         e.Cancel = true;
                     }
                     break;
-            }
-        }
-
-        private void dgvMain_CellDoubleClick(object sender, DataGridViewCellEventArgs e) {
-            if(dgvMain.ReadOnly == false && e.ColumnIndex == 4) {
-                showEditGenreDialog();
-            }
-        }
-
-        private void dgvMain_KeyDown(object sender, KeyEventArgs e) {
-            if(dgvMain.ReadOnly == false && e.KeyCode == Keys.Enter) {
-                if(dgvMain.CurrentCell.ColumnIndex == 4) {
-                    showEditGenreDialog();
-                }
-                dgvMain.BeginEdit(false);
-                e.Handled = true;
+                case 5:
+                    Boolean bol;
+                    if(!Boolean.TryParse((string)e.FormattedValue, out bol)) {
+                        e.Cancel = true;
+                    }
+                    break;
             }
         }
 
         private void dgvMain_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
             DataGridViewCell cell = dgvMain.CurrentCell;
-           
+
             int id = (int)dgvMain.CurrentRow.Cells[0].Value;
 
             Unit src = Storage.getUnit(id);
 
             switch(e.ColumnIndex) {
-                case 1: src.name = (string)cell.Value;  break;  //name
-                case 2: src.year = (int)cell.Value;     break;  //year
-                case 3: src.rating = (Rating)cell.Value;break;  //rating
-                case 4: src.genre = (Genre)cell.Value;  break;  //genre
-                case 5: src.info = (string)cell.Value;  break;  //info
+                case 1: src.name = (string)cell.Value;      break;  //name
+                case 2: src.year = (int)cell.Value;         break;  //year
+                case 3: src.rating = (Rating)cell.Value;    break;  //rating
+                case 4: src.genre = (Genre)cell.Value;      break;  //genre
+                case 5: src.watched = 
+                        (Boolean)Boolean.Parse(
+                            cell.Value.ToString()
+                            );                              break;  //watched
+                case 6: src.info = (string)cell.Value;      break;  //info
             }
-            
+
         }
 
+        private void dgvMain_CellDoubleClick(object sender, DataGridViewCellEventArgs e) {
+            if(dgvMain.ReadOnly == false && e.ColumnIndex == 4) {
+                //showEditGenreDialog();
+            }
+        }
+
+        private void dgvMain_KeyDown(object sender, KeyEventArgs e) {
+            if(dgvMain.ReadOnly == false && e.KeyCode == Keys.Enter) {
+                dgvMain_CellBeginEdit(sender, 
+                    new DataGridViewCellCancelEventArgs(
+                        dgvMain.CurrentCell.ColumnIndex, 
+                        dgvMain.CurrentCell.RowIndex
+                        )
+                    );
+                /*
+                if(dgvMain.CurrentCell.ColumnIndex == 4) {
+                    dgvMain.BeginEdit(false);
+                    showEditGenreDialog();
+                }
+                */
+                //dgvMain.BeginEdit(false);
+                e.Handled = true;
+            }
+        }
+
+
         #endregion
+
+        private void dgvMain_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e) {
+            Storage.deleteUnit((int)e.Row.Cells[0].Value);
+        }
+
+        private void btAdd_Click(object sender, EventArgs e) {
+            int id = Storage.createNewUnit();
+            //Unit src = Storage.getUnit(id);
+        }
 
         private void showEditGenreDialog() {
             GenreDialog gd = new GenreDialog(this, dgvMain.CurrentCell);
             dgvMain.Columns[dgvMain.CurrentCell.ColumnIndex].ReadOnly = false;
             Opacity = 0.60;
-            dgvMain.BeginEdit(false);
+            //dgvMain.BeginEdit(false);
             gd.ShowDialog();
             //dgvMain_CellEndEdit(new object(), new DataGridViewCellEventArgs(dgvMain.CurrentCell.ColumnIndex, dgvMain.CurrentRow.Index));
             dgvMain.EndEdit();
             dgvMain.Columns[dgvMain.CurrentCell.ColumnIndex].ReadOnly = true;
-            Opacity = 0.97;
+            Opacity = DEFAULT_OPACITY;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {

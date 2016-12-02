@@ -1,0 +1,9 @@
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\bin\Release\AnimeApp.exe.config
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\bin\Release\AnimeApp.exe
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\bin\Release\AnimeApp.pdb
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Release\AnimeApp.Form1.resources
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Release\AnimeApp.GenreDialog.resources
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Release\AnimeApp.Properties.Resources.resources
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Release\AnimeApp.csproj.GenerateResource.Cache
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Release\AnimeApp.exe
+C:\GitHub\AnimeApp\AnimeApp\AnimeApp\obj\Release\AnimeApp.pdb

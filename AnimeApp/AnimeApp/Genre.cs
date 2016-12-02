@@ -19,6 +19,9 @@ namespace AnimeApp {
 
         public Genre(string[] str) {
             genre = new List<GenreType>();
+
+            if(str.Length == 1 && str[0] == "") return;
+
             GenreType pom;
             foreach(string item in str) {
                 try {
@@ -28,12 +31,14 @@ namespace AnimeApp {
                     throw new System.Exception("Could not parse to Genre enum!");
                 }
             }
+            
         }
 
         public static Boolean tryParse(string str, out Genre genre) {
             genre = null;
             if(str == "") {
-                return false;
+                genre = new Genre();
+                return true;
             }
             string[] s = str.Split(' ');
 
@@ -66,6 +71,7 @@ namespace AnimeApp {
             Adventure,
             Comedy,
             Demons,
+            Detective,
             Drama,
             Ecchi,
             Romance,
@@ -82,12 +88,26 @@ namespace AnimeApp {
             Military,
             Music,
             Mystery,
+            Occult,
             Parody,
             Police,
             Post_Apocalyptic,
             Psychological,
             School,
-            Sci_fi
+            Sci_fi,
+            Seinen,
+            Shoujo,
+            Shounen,
+            Slice_of_life,
+            Space,
+            Sports,
+            Superpower,
+            Supernatural,
+            Tragedy,
+            Thriller,
+            Vampire,
+            Yaoi,
+            Yuri
         }
     }
 

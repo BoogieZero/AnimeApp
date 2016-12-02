@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<id_counter>1</id_counter>
+	<Units>
+		<Unit
+			name="Future Diary"
+			id="1">
+			<Year>2010</Year>
+			<Rating>+++</Rating>
+			<Genre>Action Psychological Romance</Genre>
+			<Watched>True</Watched>
+			<Info></Info>
+		</Unit>
+	</Units>
+</Root>
