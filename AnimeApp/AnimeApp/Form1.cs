@@ -19,8 +19,11 @@ namespace AnimeApp {
         public Form1() {
             //Single instance process
             String thisprocessname = Process.GetCurrentProcess().ProcessName;
-            if(Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1)
+            if(Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1) {
+                Application.Exit();
+                Environment.Exit(0);
                 return;
+            }
             //
 
             InitializeComponent();
