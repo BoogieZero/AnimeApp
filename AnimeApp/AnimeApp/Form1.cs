@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,18 +17,22 @@ namespace AnimeApp {
         private Point lastLocation;
 
         public Form1() {
-            InitializeComponent();
+            //Single instance process
+            String thisprocessname = Process.GetCurrentProcess().ProcessName;
+            if(Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1)
+                return;
+            //
 
+            InitializeComponent();
             Storage.createAnimeTable();
 
             Console.WriteLine("path: "+Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
 
             dgvMain.RowsAdded += DgvMain_RowsAdded;
-
             dgvMain.DataSource = Storage.tabAnime;
             //id column invisible
             dgvMain.Columns["id"].Visible = ID_VISIBLE;
-            //((DataGridViewCheckBoxColumn)dgvMain.Columns["Watched"]).FlatStyle = FlatStyle.Flat;
+            
             //last column (info) fills the space
             dgvMain.Columns[dgvMain.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
